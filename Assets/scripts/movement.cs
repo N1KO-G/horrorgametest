@@ -167,11 +167,11 @@ public class movement : MonoBehaviour
             rb.AddForce(Vector2.up * jumpForce * 1.5f);
             rb.AddForce(normalVector * jumpForce * .5f);
 
-            Vector3 vel = rb.velocity;
-            if (rb.velocity.y < 0.5f)
-             rb.velocity = new Vector3(vel.x,0, vel.z);
-            else if (rb.velocity.y > 0)
-                rb.velocity = new Vector3(vel.x, vel.y / 2, vel.z);
+            Vector3 vel = rb.linearVelocity;
+            if (rb.linearVelocity.y < 0.5f)
+             rb.linearVelocity = new Vector3(vel.x,0, vel.z);
+            else if (rb.linearVelocity.y > 0)
+                rb.linearVelocity = new Vector3(vel.x, vel.y / 2, vel.z);
 
             Invoke(nameof(ResetJump), jumpCooldown);
 
@@ -217,22 +217,22 @@ public class movement : MonoBehaviour
         }
         
         //Limit diagonal running. This will also cause a full stop if sliding fast and un-crouching, so not optimal.
-        if (Mathf.Sqrt((Mathf.Pow(rb.velocity.x, 2) + Mathf.Pow(rb.velocity.z, 2))) > maxSpeed) {
-            float fallspeed = rb.velocity.y;
-            Vector3 n = rb.velocity.normalized * maxSpeed;
-            rb.velocity = new Vector3(n.x, fallspeed, n.z);
+        if (Mathf.Sqrt((Mathf.Pow(rb.linearVelocity.x, 2) + Mathf.Pow(rb.linearVelocity.z, 2))) > maxSpeed) {
+            float fallspeed = rb.linearVelocity.y;
+            Vector3 n = rb.linearVelocity.normalized * maxSpeed;
+            rb.linearVelocity = new Vector3(n.x, fallspeed, n.z);
         }
 
     }
 
         public Vector2 FindVelRelativeToLook() {
         float lookAngle = orientation.transform.eulerAngles.y;
-        float moveAngle = Mathf.Atan2(rb.velocity.x, rb.velocity.z) * Mathf.Rad2Deg;
+        float moveAngle = Mathf.Atan2(rb.linearVelocity.x, rb.linearVelocity.z) * Mathf.Rad2Deg;
 
         float u = Mathf.DeltaAngle(lookAngle, moveAngle);
         float v = 90 - u;
 
-        float magnitue = rb.velocity.magnitude;
+        float magnitue = rb.linearVelocity.magnitude;
         float yMag = magnitue * Mathf.Cos(u * Mathf.Deg2Rad);
         float xMag = magnitue * Mathf.Cos(v * Mathf.Deg2Rad);
         
