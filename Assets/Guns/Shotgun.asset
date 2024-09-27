@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e3e79514f06f404c842bddc821edff3, type: 3}
+  m_Name: Shotgun
+  m_EditorClassIdentifier: 
+  type: 1
+  Name: Shotgun
+  ModelPrefab: {fileID: 7261180253012997771, guid: 45b8df961d584e74895dbbf20d20a0ae,
+    type: 3}
+  SpawnPoint: {x: 0.28, y: -0.215, z: 0.109}
+  SpawnRotation: {x: -90, y: 90, z: 0}
+  ShootConfig: {fileID: 11400000, guid: 9017e65aedef8f44891a13405ced2bc3, type: 2}
+  TrailConfig: {fileID: 11400000, guid: 711e67f4ec88728489df4ec188a26aa3, type: 2}

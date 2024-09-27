@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e3e79514f06f404c842bddc821edff3, type: 3}
+  m_Name: Usp
+  m_EditorClassIdentifier: 
+  type: 0
+  Name: Usp
+  ModelPrefab: {fileID: 4582885191702616313, guid: b57648b0082117a44b948d328b1b9447,
+    type: 3}
+  SpawnPoint: {x: 0.247, y: -0.204, z: 0.155}
+  SpawnRotation: {x: -90, y: 0, z: -180}
+  ShootConfig: {fileID: 11400000, guid: b6552903f6910ca40ab18bd747ecd546, type: 2}
+  TrailConfig: {fileID: 11400000, guid: 334cd0e4d76ada5438c52d31dd8ac9bc, type: 2}
