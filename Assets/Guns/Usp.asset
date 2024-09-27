@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   Name: Usp
-  ModelPrefab: {fileID: 4582885191702616313, guid: b57648b0082117a44b948d328b1b9447,
+  ModelPrefab: {fileID: 1554337773481005565, guid: ebe49ef584b59e84bb1468d5ce4ba8d9,
     type: 3}
   SpawnPoint: {x: 0.247, y: -0.204, z: 0.155}
   SpawnRotation: {x: -90, y: 0, z: -180}

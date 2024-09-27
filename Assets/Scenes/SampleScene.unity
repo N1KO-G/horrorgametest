@@ -2679,29 +2679,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: usp
       objectReference: {fileID: 0}
-    - target: {fileID: 7387777773219635146, guid: b57648b0082117a44b948d328b1b9447,
-        type: 3}
-      propertyPath: lengthInSec
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 7387777773219635146, guid: b57648b0082117a44b948d328b1b9447,
-        type: 3}
-      propertyPath: InitialModule.startSize.scalar
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7387777773219635146, guid: b57648b0082117a44b948d328b1b9447,
-        type: 3}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7387777773219635146, guid: b57648b0082117a44b948d328b1b9447,
-        type: 3}
-      propertyPath: InitialModule.startLifetime.scalar
-      value: 0.0001
-      objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 7387777773219635146, guid: b57648b0082117a44b948d328b1b9447, type: 3}
-    - {fileID: 5383810762545546356, guid: b57648b0082117a44b948d328b1b9447, type: 3}
+    - {fileID: 0}
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
