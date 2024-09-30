@@ -5,13 +5,13 @@ using UnityEngine;
 public class PlayerAction : MonoBehaviour
 {
     [SerializeField]
-    private PlayerGunSelector GunSelector;
+    private Gun Gun;
 
   private void Update()
   {
-    if (Input.GetMouseButtonDown(0) && GunSelector.ActiveGun != null)
+    if (Input.GetMouseButtonDown(0))
     {
-        GunSelector.ActiveGun.Shoot();
+        Gun.Shoot();
     }
   }
 }

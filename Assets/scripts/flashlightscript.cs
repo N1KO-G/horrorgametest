@@ -11,7 +11,7 @@ public class flashlightscript : MonoBehaviour
 
     public GameObject player;
 
-    //public bool isPickedUp = false;
+    public bool isPickedUp = false;
 
     public bool isInZone = false;
     
@@ -20,9 +20,11 @@ public class flashlightscript : MonoBehaviour
         if (isInZone && Input.GetKey(KeyCode.E))
         {
             flashlight.SetActive(flashlight);
-            Destroy(this.gameObject);
-            
+            isPickedUp = true;
         }
+        
+        
+        
        
     }
     

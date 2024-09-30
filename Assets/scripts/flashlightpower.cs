@@ -5,6 +5,12 @@ public class flashlighton : MonoBehaviour
 {
     public GameObject flashlight;
     public bool isFlashlightOn;
+    public flashlightscript Flashlightscript;
+
+    public void Awake()
+    {
+        Flashlightscript.GetComponent<flashlightscript>();
+    }
 
     public void Update()
     {
@@ -17,7 +23,7 @@ public class flashlighton : MonoBehaviour
             isFlashlightOn = false;
         }
         
-        if (!isFlashlightOn && Input.GetKeyDown(KeyCode.F))
+        if (Flashlightscript.isPickedUp && !isFlashlightOn && Input.GetKeyDown(KeyCode.F))
         {
             flashlight.SetActive(true);
         }
