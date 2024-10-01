@@ -32,7 +32,7 @@ public class flashlighton : MonoBehaviour
             flashlight.SetActive(false);    
         }
 
-        Debug.Log(isFlashlightOn);
+        //Debug.Log(isFlashlightOn);
         
             
         

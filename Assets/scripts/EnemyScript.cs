@@ -18,7 +18,7 @@ public void Update()
         Destroy(this.gameObject);
     }
 
-    Debug.Log("Enemy health is " + health);
+    //Debug.Log("Enemy health is " + health);
 
 }
 

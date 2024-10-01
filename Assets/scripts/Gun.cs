@@ -33,12 +33,12 @@ public class Gun : MonoBehaviour
     [SerializeField] 
     public bool IsShotgun;
     
-    private Animator Animator;
+    private Animator animator;
     private float LastShootTime;
 
-    private void Awake()
+    public void Awake()
     {
-        Animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         enemyScript = GetComponent<EnemyScript>();
         cam = Camera.main;
     }
@@ -49,7 +49,7 @@ public class Gun : MonoBehaviour
     {
         if (LastShootTime + ShootDelay < Time.time)
         {
-            Animator.SetBool("IsShooting", true);
+            animator.SetBool("isShooting", true);
             ShootingSystem.Play();
             Vector3 direction = GetDirection();
 
@@ -114,14 +114,14 @@ public class Gun : MonoBehaviour
     private IEnumerator SpawnTrail(TrailRenderer Trail, Vector3 HitPoint, Vector3 HitNormal, bool MadeImpact)
     {
        
-        Vector3 startPosition = Trail.transform.position;
+        Vector3 startPosition = BulletSpawnPoint.transform.position;
         
-        float distance = Vector3.Distance(Trail.transform.position, HitPoint);
+        float distance = Vector3.Distance(BulletSpawnPoint.transform.position, HitPoint);
         float remainingDistance = distance;
 
-        while (distance == 0)
+        while (distance > 0)
         {
-            Trail.transform.position = Vector3.Lerp(startPosition, HitPoint, 1 - (remainingDistance / distance));
+            BulletSpawnPoint.transform.position = Vector3.Lerp(startPosition, HitPoint, 1 - (remainingDistance / distance));
 
             distance -= BulletSpeed * Time.deltaTime;
 
@@ -129,14 +129,17 @@ public class Gun : MonoBehaviour
 
             Debug.Log(distance);
         }
-       
-        Animator.SetBool("IsShooting", false);
-        Trail.transform.position = HitPoint;
-
         
+        animator.Play("Shooting", 0, 0);
+        animator.SetBool("isShooting", false);
+        BulletSpawnPoint.transform.position = HitPoint;
+
+
+
         if (MadeImpact)
         {
             Instantiate(ImpactParticleSystem, HitPoint, Quaternion.LookRotation(HitNormal));
+
         }
 
         Destroy(Trail.gameObject, Trail.time);
