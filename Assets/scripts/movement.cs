@@ -35,6 +35,16 @@ public class movement : MonoBehaviour
     public float threshold = 0.01f;
     public float maxSlopeAngle = 35f;
 
+    //stamina management
+    public float stamina = 100f;
+    public float maxstamina = 100f;
+
+    private float staminaRegenTimer = 0.0f;
+
+    private const float staminaIncreasePerframe = 1.0f;
+    private const float staminaDecreasePerframe = 5.0f;
+    private const float staminaTimeToRegen = 3.0f;
+
     //crouching
     private Vector3 crouchScale = new Vector3(1, 0.5f, 1);
     private Vector3 PlayerScale;
@@ -83,7 +93,7 @@ public class movement : MonoBehaviour
         x = Input.GetAxisRaw("Horizontal");
         y = Input.GetAxisRaw("Vertical");
         jumping = Input.GetButton("Jump");
-        sprinting = Input.GetKey(KeyCode.LeftShift);
+         sprinting = Input.GetKey(KeyCode.LeftShift);
         crouching = Input.GetKey(KeyCode.LeftControl);
 
         //crouching
@@ -124,9 +134,25 @@ public class movement : MonoBehaviour
         if(readyToJump && jumping) Jump();
 
         //sprinting
-        if (grounded && sprinting)
+
+       
+
+        if (grounded && sprinting && !crouching && stamina > 0)
         {
+            stamina = Mathf.Clamp(stamina-(staminaDecreasePerframe * Time.deltaTime), 0.0f, maxstamina);
+            staminaRegenTimer = 0.0f;
             moveSpeed = sprintspeed;
+        }
+        else if (stamina < maxstamina)
+        {
+            if(staminaRegenTimer >= staminaTimeToRegen)
+            {
+                stamina = Mathf.Clamp(stamina + (staminaIncreasePerframe * Time.deltaTime), 0.0f,maxstamina);
+            }
+                else
+                {
+                    staminaRegenTimer += Time.deltaTime;
+                }
         }
         else
             {
