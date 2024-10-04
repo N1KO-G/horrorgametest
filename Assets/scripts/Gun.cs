@@ -10,7 +10,16 @@ using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Animator))]
 public class Gun : MonoBehaviour
-{
+{   
+
+    
+    [SerializeField]
+    public GameObject pistol;
+    [SerializeField]
+    public GameObject shotgun;
+  
+    
+  
     [SerializeField]
     private bool AddBulletSpread = true;
     [SerializeField]
@@ -34,7 +43,7 @@ public class Gun : MonoBehaviour
     [SerializeField] 
     public bool isShotgun;
     [SerializeField]
-    public float range = 1000f;
+    public float range = 20f;
     
     
     private Animator animator;
@@ -42,6 +51,17 @@ public class Gun : MonoBehaviour
     int pellets = 8;
     
 
+    public void Update()
+    {
+        if (Input.GetMouseButtonDown(0) && pistol.activeInHierarchy)
+        {
+        Shoot();
+        }
+        else if(Input.GetMouseButtonDown(0) && shotgun.activeInHierarchy)
+        {
+        Shoot();
+        }
+    }
     public void Awake()
     {
         animator = GetComponent<Animator>();
@@ -70,16 +90,16 @@ public class Gun : MonoBehaviour
                 for(int i = 0;i < pellets; i++)
                 {
             
-           if (Physics.Raycast(cam.transform.position + GetDirection(),direction, out hit, range))
+           if (Physics.Raycast(cam.transform.position + GetDirection(),cam.transform.forward, out hit, range))
         {
-                Debug.DrawLine(cam.transform.position, hit.point, Color.green, 1f);
+                Debug.DrawLine(cam.transform.position  + cam.transform.forward, hit.point, Color.green, 1f);
              }
            else
             {
-             Debug.DrawLine(cam.transform.position + GetDirection(), cam.transform.position + direction * range, Color.red, 1f);
+             Debug.DrawLine(cam.transform.position  + cam.transform.forward + GetDirection(), cam.transform.forward * range, Color.red, 1f);
             }
                 
-           if (Physics.Raycast(cam.transform.position, direction, out hit, range))
+           if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range))
             {
              if(hit.transform.TryGetComponent<EnemyScript> (out var enemyScript))
              {
@@ -110,6 +130,8 @@ public class Gun : MonoBehaviour
                 
                 Debug.DrawRay(BulletSpawnPoint.position, hit.point, Color.green, 1f);
                 LastShootTime = Time.time; 
+
+                
             }
             else
             {
