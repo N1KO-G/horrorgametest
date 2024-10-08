@@ -16,12 +16,5 @@ public class PlayerAction : MonoBehaviour
   {
     animator = GetComponent<Animator>();
   }
-  private void Update()
-  {
-    if (Input.GetMouseButtonDown(0) && Knife.isActiveAndEnabled)
-    {
-      Knife.Stab();
-    }
 
-  }
 }

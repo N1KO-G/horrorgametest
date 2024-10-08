@@ -7,18 +7,28 @@ public class Knife : MonoBehaviour
     [SerializeField]
      public Transform stabpoint;
     [SerializeField]
-    EnemyScript enemyScript;
+     private Knife knife;
 
-
-
-
+     [SerializeField]
+     public float knifecooldown = 0.5f;
+     public float knifetimebeforelasthit = 0f;
     Animator animator;
 
+
+private void Update()
+  {
+    if (Input.GetMouseButtonDown(0) && knife.isActiveAndEnabled)
+    {
+      knife.Stab();
+    }
+
+    knifetimebeforelasthit += Time.deltaTime;
+
+  }
 
  void Awake()
  {
     animator = GetComponent<Animator>();
-    enemyScript = GetComponent<EnemyScript>();
  }
 
 
@@ -26,29 +36,32 @@ public class Knife : MonoBehaviour
 
  public void Stab()
  {
+   
+
+   
+   if(knifetimebeforelasthit > knifecooldown)
+   {
     animator.Play("stab");
     animator.SetBool("isStabbing",true);
+    knifetimebeforelasthit = 0;
 
-    Ray ray = new Ray(stabpoint.position, stabpoint.forward);
-    RaycastHit hit;
-    
-    if (Physics.Raycast(stabpoint.transform.position,stabpoint.transform.forward, out hit, 5))
+   Collider[] DamageColliders = Physics.OverlapSphere(stabpoint.position, 0.125f/2);      
+    foreach(Collider coll in DamageColliders)
     {
-
-        if (hit.transform.TryGetComponent<EnemyScript> ( out var enemyScript))
+        if(coll.TryGetComponent<EnemyScript>(out var enemyscript))
         {
-            enemyScript.TakeDamage(10);
-        }
-
-        Debug.DrawLine(stabpoint.position, hit.point, Color.green);
+           enemyscript.TakeDamage(10); 
+        }        
     }
 
-    
 
 
+    knifetimebeforelasthit = 0;
 
     animator.Play("stab", 0,0);
     animator.SetBool("isStabbing",false);
+   }
 
+  
  }
 }

@@ -43,7 +43,7 @@ public class Gun : MonoBehaviour
     [SerializeField] 
     public bool isShotgun;
     [SerializeField]
-    public float range = 20f;
+    public float range = 30f;
     
     
     private Animator animator;
@@ -93,10 +93,14 @@ public class Gun : MonoBehaviour
            if (Physics.Raycast(cam.transform.position + GetDirection(),cam.transform.forward, out hit, range))
         {
                 Debug.DrawLine(cam.transform.position  + cam.transform.forward, hit.point, Color.green, 1f);
+                ShootingSystem.Play();
+                
              }
            else
             {
              Debug.DrawLine(cam.transform.position  + cam.transform.forward + GetDirection(), cam.transform.forward * range, Color.red, 1f);
+             ShootingSystem.Play();
+             
             }
                 
            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range))
@@ -104,6 +108,7 @@ public class Gun : MonoBehaviour
              if(hit.transform.TryGetComponent<EnemyScript> (out var enemyScript))
              {
              enemyScript.TakeDamage(5);
+
              }
             }
                 }
@@ -116,28 +121,22 @@ public class Gun : MonoBehaviour
             //PISTOL 
             if (Physics.Raycast(ray,out hit) && !isShotgun)
             {
-
-                
-
                  if(hit.transform.TryGetComponent<EnemyScript> (out var enemyScript))
                 {
                     enemyScript.TakeDamage(20);
                 }
-
                 Physics.Raycast(BulletSpawnPoint.position, direction,out hit, float.MaxValue);
                 TrailRenderer trail = Instantiate(BulletTrail, BulletSpawnPoint.position, Quaternion.identity);
-                StartCoroutine(SpawnTrail(trail, hit.point, hit.normal, true));
+               // StartCoroutine(SpawnTrail(trail, hit.point, hit.normal, true));
                 
                 Debug.DrawRay(BulletSpawnPoint.position, hit.point, Color.green, 1f);
-                LastShootTime = Time.time; 
-
-                
+                 LastShootTime = Time.time;                 
             }
             else
             {
                 TrailRenderer trail = Instantiate(BulletTrail, BulletSpawnPoint.position, Quaternion.identity);
 
-                StartCoroutine(SpawnTrail(trail, BulletSpawnPoint.position + GetDirection() * 100, Vector3.zero, false));
+               // StartCoroutine(SpawnTrail(trail, BulletSpawnPoint.position + GetDirection() * 100, Vector3.zero, false));
 
                 LastShootTime = Time.time;
             }
@@ -166,33 +165,33 @@ public class Gun : MonoBehaviour
         return direction;
     }
 
-    private IEnumerator SpawnTrail(TrailRenderer Trail, Vector3 HitPoint, Vector3 HitNormal, bool MadeImpact)
-    {
-       
-        Vector3 startPosition = BulletSpawnPoint.transform.position;
-        
-        float distance = Vector3.Distance(BulletSpawnPoint.transform.position, HitPoint);
-        float remainingDistance = distance;
-
-        while (distance > 0)
-        {
-            BulletSpawnPoint.transform.position = Vector3.Lerp(startPosition, HitPoint, 1 - (remainingDistance / distance));
-
-            distance -= BulletSpeed * Time.deltaTime;
-
-            yield return null;
-
-            //Debug.Log(distance);
-        }
-        
-        BulletSpawnPoint.transform.position = HitPoint;
-
-
-        if (MadeImpact)
-        {
-            Instantiate(ImpactParticleSystem, HitPoint, Quaternion.LookRotation(HitNormal));
-        }
-
-        Destroy(Trail.gameObject, Trail.time);
-    }
+   // private IEnumerator SpawnTrail(TrailRenderer Trail, Vector3 HitPoint, Vector3 HitNormal, bool MadeImpact)
+   // {
+   //    
+   //     Vector3 startPosition = BulletSpawnPoint.transform.position;
+   //     
+   //     float distance = Vector3.Distance(BulletSpawnPoint.transform.position, HitPoint);
+   //     float remainingDistance = distance;
+//
+   //     while (distance > 0)
+   //     {
+   //         BulletSpawnPoint.transform.position = Vector3.Lerp(startPosition, HitPoint, 1 - (remainingDistance / distance));
+//
+   //         distance -= BulletSpeed * Time.deltaTime;
+//
+   //         yield return null;
+//
+   //         //Debug.Log(distance);
+   //     }
+   //     
+   //     BulletSpawnPoint.transform.position = HitPoint;
+//
+//
+   //     if (MadeImpact)
+   //     {
+   //         Instantiate(ImpactParticleSystem, HitPoint, Quaternion.LookRotation(HitNormal));
+   //     }
+//
+   //     Destroy(Trail.gameObject, Trail.time);
+   // }
 }

@@ -8,6 +8,7 @@ using UnityEngine.Animations;
 using System.Security.Cryptography;
 using Unity.Collections;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 
 public class movement : MonoBehaviour
 {
@@ -45,6 +46,10 @@ public class movement : MonoBehaviour
     private const float staminaDecreasePerframe = 5.0f;
     private const float staminaTimeToRegen = 3.0f;
 
+    //dashing
+    public float DashCooldown = 0.7f;
+    public float DashSpeed;
+
     //crouching
     private Vector3 crouchScale = new Vector3(1, 0.5f, 1);
     private Vector3 PlayerScale;
@@ -56,7 +61,7 @@ public class movement : MonoBehaviour
 
     //input
     public float x,y;
-    public bool jumping, sprinting, crouching;
+    public bool jumping, sprinting, crouching, dashing ;
 
     private Vector3 normalVector = Vector3.up;
 
@@ -93,14 +98,24 @@ public class movement : MonoBehaviour
         x = Input.GetAxisRaw("Horizontal");
         y = Input.GetAxisRaw("Vertical");
         jumping = Input.GetButton("Jump");
-         sprinting = Input.GetKey(KeyCode.LeftShift);
+        sprinting = Input.GetKey(KeyCode.LeftShift);
         crouching = Input.GetKey(KeyCode.LeftControl);
+        
 
         //crouching
         if (Input.GetKeyDown(KeyCode.LeftControl))
         StartCrouch();
         if (Input.GetKeyUp(KeyCode.LeftControl))
         StopCrouch();
+        if(Input.GetKeyDown(KeyCode.Q))
+        StartDash();
+    }
+
+
+    public void StartDash()
+    {
+         rb.AddForce(orientation.transform.forward * y * moveSpeed * Time.deltaTime * 50 * 50);
+        
     }
 
     private void StartCrouch()
@@ -134,14 +149,12 @@ public class movement : MonoBehaviour
         if(readyToJump && jumping) Jump();
 
         //sprinting
-
-       
-
-        if (grounded && sprinting && !crouching && stamina > 0)
+        if (grounded && sprinting && !crouching && rb.linearVelocity != Vector3.zero)
         {
+            moveSpeed = 1500;
             stamina = Mathf.Clamp(stamina-(staminaDecreasePerframe * Time.deltaTime), 0.0f, maxstamina);
             staminaRegenTimer = 0.0f;
-            moveSpeed = sprintspeed;
+            
         }
         else if (stamina < maxstamina)
         {
@@ -154,9 +167,9 @@ public class movement : MonoBehaviour
                     staminaRegenTimer += Time.deltaTime;
                 }
         }
-        else
+        else 
             {
-                moveSpeed = 1000;
+                moveSpeed = 700;   
             }
 
         float maxSpeed = this.maxSpeed;
