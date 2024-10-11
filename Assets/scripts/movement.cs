@@ -54,6 +54,8 @@ public class movement : MonoBehaviour
     private Vector3 crouchScale = new Vector3(1, 0.5f, 1);
     private Vector3 PlayerScale;
 
+    public float CrouchSpeed = 500;
+
     //Jumping
     private bool readyToJump = true;
     private float jumpCooldown = 0.25f;
@@ -114,7 +116,8 @@ public class movement : MonoBehaviour
 
     public void StartDash()
     {
-         rb.AddForce(orientation.transform.forward * y * moveSpeed * Time.deltaTime * 50 * 50);
+      
+        
         
     }
 
@@ -124,6 +127,8 @@ public class movement : MonoBehaviour
         transform.localScale = crouchScale;
         transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
 
+       
+
     }
 
     private void StopCrouch()
@@ -131,12 +136,13 @@ public class movement : MonoBehaviour
         //RETURNING TO NON CROUCHED 
         transform.localScale = PlayerScale;
         transform.position = new Vector3(transform.position.x, transform.position.y + 0.5F, transform.position.z);
+        
     }
 
     private void Movement()
     {
         // EXTRA GRAVITY
-        rb.AddForce(Vector3.down * Time.deltaTime * 10);
+        rb.AddForce(Vector3.down * Time.deltaTime * 5);
 
         //FINDING VELOCITRY RELATIVE TO WHERE YOU LOOKING
          Vector2 mag = FindVelRelativeToLook();
@@ -147,11 +153,27 @@ public class movement : MonoBehaviour
 
         //IF HOLD JUMP AND JUMP READY THEN JUMP
         if(readyToJump && jumping) Jump();
+       
+        //dash
+        
 
-        //sprinting
-        if (grounded && sprinting && !crouching && rb.linearVelocity != Vector3.zero)
+        //sprinting/crouchign speed
+        if (sprinting && grounded && !crouching)
         {
             moveSpeed = 1500;
+        }
+        else if (crouching && grounded)
+        {
+            moveSpeed = 500;
+        }
+        else 
+        {
+            moveSpeed = 1000;
+        }
+
+
+        if (grounded && sprinting && !crouching && rb.linearVelocity != Vector3.zero)
+        {
             stamina = Mathf.Clamp(stamina-(staminaDecreasePerframe * Time.deltaTime), 0.0f, maxstamina);
             staminaRegenTimer = 0.0f;
             
@@ -167,10 +189,7 @@ public class movement : MonoBehaviour
                     staminaRegenTimer += Time.deltaTime;
                 }
         }
-        else 
-            {
-                moveSpeed = 700;   
-            }
+        
 
         float maxSpeed = this.maxSpeed;
         // IF MOVEMENT MORE THAN MAXSPEED, CANCEL INPUT SO YOU CANT GO OVER MAXSPEED
@@ -191,7 +210,7 @@ public class movement : MonoBehaviour
        //forces to actually move the player
        {
         rb.AddForce(orientation.transform.forward * y * moveSpeed * Time.deltaTime * multiplier * multiplierV);
-        rb.AddForce(orientation.transform.right * x * moveSpeed * Time.deltaTime * multiplier );
+        rb.AddForce(orientation.transform.right * x * moveSpeed * Time.deltaTime * multiplier);
        }
 
     }
