@@ -7,13 +7,8 @@ public class PlayerCam : MonoBehaviour
 {
     
 
-    public Transform orientation;
-    
-
-   
-    float yRotation;
-
- 
+    public Transform orientation;   
+    float yRotation; 
 
     private void Update()
     {

@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 
-public class flashlightscript : MonoBehaviour
+public class pickupscript : MonoBehaviour
 {
 
-    public GameObject flashlight;
+    public GameObject pickupItem;
 
     public GameObject player;
 
@@ -19,13 +19,9 @@ public class flashlightscript : MonoBehaviour
     {
         if (isInZone && Input.GetKey(KeyCode.E))
         {
-            flashlight.SetActive(flashlight);
+            pickupItem.SetActive(pickupItem);
             isPickedUp = true;
-        }
-        
-        
-        
-       
+        }                      
     }
     
     public void OnTriggerEnter(Collider other)

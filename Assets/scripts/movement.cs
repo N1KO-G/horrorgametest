@@ -39,16 +39,21 @@ public class movement : MonoBehaviour
     //stamina management
     public float stamina = 100f;
     public float maxstamina = 100f;
-
     private float staminaRegenTimer = 0.0f;
 
-    private const float staminaIncreasePerframe = 1.0f;
-    private const float staminaDecreasePerframe = 5.0f;
+    private const float staminaIncreasePerframe = 6.0f;
+    private const float staminaDecreasePerframe = 12.0f;
     private const float staminaTimeToRegen = 3.0f;
 
     //dashing
     public float DashCooldown = 0.7f;
-    public float DashSpeed;
+    public float dashforce = 0.001f;
+    public bool isdashing = false;
+    public float timeBetweenDashing = 0;
+    public bool isReadytodash = true;
+    
+    private Vector3 Currentposition;
+    private Vector3 previousPosition;
 
     //crouching
     private Vector3 crouchScale = new Vector3(1, 0.5f, 1);
@@ -85,12 +90,30 @@ public class movement : MonoBehaviour
     {
         //call movement script
         Movement();
+
+        timeBetweenDashing += Time.deltaTime;
+
+        if (timeBetweenDashing >= DashCooldown)
+        {
+            isReadytodash = true;
+        }
+        else 
+        {
+            isReadytodash = false;
+            isdashing = false;
+        }
+        
+
+        previousPosition = Currentposition;
+        Currentposition = transform.position;
     }
 
     private void Update()
     {
         MyInput();
         Look();
+
+
     }
 
     //collecting user inputs 
@@ -116,9 +139,19 @@ public class movement : MonoBehaviour
 
     public void StartDash()
     {
-      
-        
-        
+        if (grounded && stamina >= 10 && !isdashing && isReadytodash)
+        {
+        stamina -= 10;
+        isdashing = true;
+        rb.AddForce(movedirection * dashforce, ForceMode.Impulse); 
+        timeBetweenDashing = 0;
+        } 
+       
+    }
+
+    public void stopDash()
+    {
+        isdashing = false;
     }
 
     private void StartCrouch()
@@ -126,9 +159,6 @@ public class movement : MonoBehaviour
         //START CROUCHING
         transform.localScale = crouchScale;
         transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
-
-       
-
     }
 
     private void StopCrouch()
@@ -158,9 +188,9 @@ public class movement : MonoBehaviour
         
 
         //sprinting/crouchign speed
-        if (sprinting && grounded && !crouching)
+        if (sprinting && grounded && !crouching && stamina != 0)
         {
-            moveSpeed = 1500;
+            moveSpeed = 2500;
         }
         else if (crouching && grounded)
         {
@@ -193,10 +223,10 @@ public class movement : MonoBehaviour
 
         float maxSpeed = this.maxSpeed;
         // IF MOVEMENT MORE THAN MAXSPEED, CANCEL INPUT SO YOU CANT GO OVER MAXSPEED
-       if (x > 0 && xMag > maxSpeed) x = 0;
-       if (x < 0 && xMag < -maxSpeed) x = 0;
-       if (x > 0 && yMag > maxSpeed) x = 0;
-       if (x < 0 && yMag < -maxSpeed) x = 0;
+      // if (x > 0 && xMag > maxSpeed) x = 0;
+      // if (x < 0 && xMag < -maxSpeed) x = 0;
+      // if (x > 0 && yMag > maxSpeed) x = 0;
+      // if (x < 0 && yMag < -maxSpeed) x = 0;
 
        float multiplier = 1f, multiplierV = 1f;
 
@@ -208,18 +238,19 @@ public class movement : MonoBehaviour
        }
 
        //forces to actually move the player
-       {
-        rb.AddForce(orientation.transform.forward * y * moveSpeed * Time.deltaTime * multiplier * multiplierV);
         rb.AddForce(orientation.transform.right * x * moveSpeed * Time.deltaTime * multiplier);
-       }
+        rb.AddForce(orientation.transform.forward * y * moveSpeed * Time.deltaTime * multiplier * multiplierV);
+       
+       
 
     }
 
     private void Jump()
     {
-        if (grounded && readyToJump)
+        if (grounded && readyToJump || grounded && readyToJump && stamina >= 20)
         {
             readyToJump = false;
+            stamina -= 20;
 
             //Add the jump force
             rb.AddForce(Vector2.up * jumpForce * 1.5f);
@@ -239,6 +270,7 @@ public class movement : MonoBehaviour
 
     private void ResetJump()
     {
+        
         readyToJump = true;
     }
 
@@ -295,6 +327,15 @@ public class movement : MonoBehaviour
         float xMag = magnitue * Mathf.Cos(v * Mathf.Deg2Rad);
         
         return new Vector2(xMag, yMag);
+    }
+
+    Vector3 movedirection
+    {
+        get
+        {
+        return (Currentposition - previousPosition).normalized;
+        }
+        
     }
 
     private bool IsFloor(Vector3 v) {
