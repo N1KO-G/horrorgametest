@@ -43,7 +43,7 @@ public class GunScriptableObject : ScriptableObject
         {
             LastShootTime = Time.time;
             ShootSystem.Play();
-            Vector3 shootDirection = ShootSystem.transform.forward * 90
+            Vector3 shootDirection = ShootSystem.transform.forward
                 + new Vector3(Random.Range(-ShootConfig.Spread.x, ShootConfig.Spread.x),
                 Random.Range(-ShootConfig.Spread.y, ShootConfig.Spread.y),
                 Random.Range(-ShootConfig.Spread.z, ShootConfig.Spread.z));
