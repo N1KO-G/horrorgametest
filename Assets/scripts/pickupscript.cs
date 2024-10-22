@@ -21,6 +21,7 @@ public class pickupscript : MonoBehaviour
         {
             pickupItem.SetActive(pickupItem);
             isPickedUp = true;
+          
         }                      
     }
     

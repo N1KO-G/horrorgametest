@@ -50,7 +50,7 @@ private void Update()
     {
         if(coll.TryGetComponent<EnemyScript>(out var enemyscript))
         {
-           enemyscript.TakeDamage(10); 
+           enemyscript.TakeDamage(25); 
         }        
     }
 

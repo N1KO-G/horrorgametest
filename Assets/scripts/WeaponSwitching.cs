@@ -5,12 +5,12 @@ public class WeaponSwitching : MonoBehaviour
 {
 
     public int selectedweapon = 0;
-    public pickupscript pickupscript;
+   
     // Start is called before the first frame update
     void Awake()
     {
         SelectWeapon();
-        pickupscript = GetComponent<pickupscript>();
+    
     }
 
 
